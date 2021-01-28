@@ -7,13 +7,15 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 
 import { UserComponent } from './user/user.component';
 import { AuthGuard } from "./shared/auth.guard";
+import { UserpageComponent } from './userpage/userpage.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   {path:'home', component:HomeComponent},
   {path:'login', component: UserComponent},
   {path:'register',component:RegisterComponent},
-  {path:'userProfile/:id',component:UserProfileComponent,canActivate: [AuthGuard]}
+  {path:'userPage', component:UserpageComponent,canActivate: [AuthGuard]},
+  {path:'userAccount', component:UserProfileComponent}
 ];
 
 @NgModule({

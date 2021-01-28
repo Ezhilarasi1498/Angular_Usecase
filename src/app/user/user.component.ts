@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import {Router, RouterModule } from '@angular/router';
+import {Router, ActivatedRoute } from '@angular/router';
 import { UserDataService } from 'src/app/user-data.service';
 import { FormBuilder, FormGroup } from "@angular/forms";
-
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user',
@@ -12,24 +12,35 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 })
 export class UserComponent implements OnInit {
   signinForm: FormGroup;
-  email:any="";
-  password:any="";
+  
   constructor(
     public fb: FormBuilder,
     public userDataService: UserDataService,
-    public router: Router
+    public router: Router,
+    private route: ActivatedRoute,
   ) {
+    
+  }
+  ngOnInit(): void {
     this.signinForm = this.fb.group({
-      email: [''],
+      username: [''],
       password: ['']
     })
   }
-  ngOnInit(): void {
-  }
+
+  get f() { return this.signinForm.controls; }
 
   submitForm(){
-    this.userDataService.signIn(this.signinForm.value);
+    this.userDataService.login(this.f.username.value,this.f.password.value)
+    .pipe(first())
+            .subscribe({
+                next: () => {
+                    // get return url from query parameters or default to home page
+                    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/userPage';
+                    this.router.navigateByUrl(returnUrl);
+                }
   
-  }
+            });
 
+}
 }

@@ -4,14 +4,16 @@ import { ReactiveFormsModule,FormsModule} from '@angular/forms'
 import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from 'src/app/authconfig.interceptor';
+import { AuthInterceptor } from 'src/app/authconfig';
+import { JwtInterceptor } from 'src/app/jwtInterceptor.interceptor';
 
 import { AppComponent } from './app.component';
 import { UserComponent } from './user/user.component';
 import { AdminComponent } from './admin/admin.component';
 import { RegisterComponent } from './register/register.component';
-import { MatchDirective } from './match.directive';
+
 import { HomeComponent } from './home/home.component';
+import { UserpageComponent } from './userpage/userpage.component';
 
 @NgModule({
   declarations: [
@@ -19,8 +21,9 @@ import { HomeComponent } from './home/home.component';
     UserComponent,
     AdminComponent,
     RegisterComponent,
-    MatchDirective,
-    HomeComponent
+    
+    HomeComponent,
+    UserpageComponent
   ],
   imports: [
     BrowserModule,
@@ -29,11 +32,10 @@ import { HomeComponent } from './home/home.component';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-  }],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    AuthInterceptor
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

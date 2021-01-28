@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserDataService } from 'src/app/user-data.service';
 import { FormBuilder, FormGroup,Validators  } from "@angular/forms";
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -19,24 +20,29 @@ export class RegisterComponent implements OnInit {
     private userDataService:UserDataService
     
   ) {
+    
+  }
+
+  
+  
+  ngOnInit(): void {
     this.signupForm = this.fb.group({
-      userName: ['',Validators.required],
+      username: ['',Validators.required],
       email: ['',[Validators.required, Validators.email]],
       password: ['',[Validators.required, Validators.minLength(6)]]
     })
   }
 
   get f() { return this.signupForm.controls; }
-  
-  ngOnInit(): void {
-  }
-
   submitRegisterForm(){
     this.submitted = true;
 
-    alert("Form Submitted");
-    this.userDataService.signUp(this.signupForm.value);
-    this.router.navigate(['login']); 
+    this.userDataService.register(this.signupForm.value)
+    .subscribe({
+                next: () => {
+                  this.router.navigateByUrl('/login'); 
+                }
+              });
   }
 
 }

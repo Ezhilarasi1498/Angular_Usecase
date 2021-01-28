@@ -21,13 +21,11 @@ export class AccountServiceService {
     })
   }
 
-  getAccountProfile(id): Observable<any> {
-    let api = `${this.URL}/userProfile/${id}`;
-    return this.http.get(api,  this.httpOptions ).pipe(
-      map((res: Response) => {
-        return res || {}
-      }),
+  getAccountProfile(): Observable<AccountDetails> {
+    let api = `${this.URL}`;
+    return this.http.get<AccountDetails>(api,  this.httpOptions )
       
-    )
+      
+    
   }
 }

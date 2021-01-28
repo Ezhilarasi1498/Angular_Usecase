@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AccountServiceService } from 'src/app/account-service.service';
+import { AccountDetails } from 'src/app/Model/accountDetail';
 
 @Component({
   selector: 'app-user-profile',
@@ -8,15 +9,14 @@ import { AccountServiceService } from 'src/app/account-service.service';
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-  AccountDetails:any=[];
+  accounts:any =[];
   constructor(
     public accountService: AccountServiceService,
     private actRoute: ActivatedRoute
   ) { 
-    let id = this.actRoute.snapshot.paramMap.get('id');
-    this.accountService.getAccountProfile(id).subscribe(res => {
-      this.AccountDetails = res.msg;
-    })
+    
+    this.accounts=this.accountService.getAccountProfile()
+    
   }
 
   ngOnInit(): void {
